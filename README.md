@@ -36,7 +36,7 @@ INTERVAL=20  # Interval of each probe
 docker run -d --tty=true \
 --net=host --restart=always \
 -v /etc/localtime:/etc/localtime:ro \
---name=auto_evacuate  hub.iflytek.com/mmwei3/auto_check_compute_down:v1.0.0-2022-01-20
+--name=auto_evacuate  /mmwei3/auto_check_compute_down:v1.0.0-2022-01-20
 
 
 3. Or another way to do it
