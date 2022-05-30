@@ -22,6 +22,7 @@ func:
 
 ```shell
 1. Configuration cmpha.conf
+vim /etc/cmpha.conf
 
 [ser]
 OS_TENANT_NAME=admin
@@ -32,11 +33,14 @@ OS_AUTH_URL=http://x.x.x.x:35357/v3
 OS_DEFAULT_DOMAIN=Default
 INTERVAL=20  # Interval of each probe
 
+
 2. Run Docker
 docker run -d --tty=true \
 --net=host --restart=always \
 -v /etc/localtime:/etc/localtime:ro \
---name=auto_evacuate  pwxwmm/openstack_compute_evacuate:v1.0.0
+--name=auto_evacuate \
+-v /etc/cmpha.conf:/etc/cmpha.conf  \
+pwxwmm/openstack_compute_evacuate:v1.0.0
 
 
 3. Or another way to do it
