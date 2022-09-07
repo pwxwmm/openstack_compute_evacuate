@@ -269,7 +269,6 @@ class check(baseInfo):
             params = {"all_tenants": 1, "host": self.cmp_down[0]}
             ret = self.get_resp(suffix, "get", params=params)
             ret = ret["servers"]
-            # logging.info(ret)
             # get server uuid for down compute
             # ser_down = [ser["id"] for ser in ret if ser["OS-EXT-SRV-ATTR:host"] in self.cmp_down]
             ser_down = [ser["id"] for ser in ret]
@@ -298,8 +297,6 @@ class check(baseInfo):
         """
         get real compute node down
         """
-        # self.serDown, self.serIp = self.chkSerFromNode()
-        # self.cmpDown, self.cmpAll = self.chkNode()
         logging.debug('first_check_ser_ip: %s' % self.ser_ip)
         logging.debug('firsh_check_cmp_down: %s' % self.cmp_down)
         if self.cmp_down and self.ser_ip:
@@ -479,18 +476,21 @@ class recover(baseInfo):
         flag_number = 1
         global evacuate_result_id
         evacuate_result_id = []
-        for s in ser_id:
-            st = self.check(s)
-            if st == "ACTIVE" or st == "ERROR":
-                cmd = "lls %s" % ser_id
-                p = sp.Popen(cmd, shell=True, stdout=DEVNULL, stderr=sp.STDOUT)
-                r = p.wait()
-                self.evacuate(s)
-                flag_number = flag_number + 1
-                evacuate_result_id.append(s)
-                time.sleep(0.5)
-            else:
-                logging.warning(u"Virtual_Machine_Not_Evacuate---%s---Because_The_VM_Stautus_is:%s" % (s, st))
+        logging.info("ser_id is length: %s  " % len(ser_id))
+        if len(ser_id) > 0:
+            for s in ser_id:
+                st = self.check(s)
+                if st == "ACTIVE" or st == "ERROR":
+                    self.evacuate(s)
+                    flag_number = flag_number + 1
+                    evacuate_result_id.append(s)
+                    time.sleep(0.5)
+                else:
+                    logging.warning(u"Virtual_Machine_Not_Evacuate---%s---Because_The_VM_Stautus_is:%s" % (s, st))
+            time.sleep(120)
+        else:
+            pass
+
 
     def send_sms_result(self, hosts, types):
         pass
@@ -506,20 +506,25 @@ class recover(baseInfo):
         check evacuate result
         """
         logging.info(flag_number)
-        logging.info('+++++++++++++')
         logging.info(evacuate_result_id)
         evacuate_hosts = []
         if flag_number != 1:
             for i in evacuate_result_id:
                 ihost = self.check_evacuate_server_host(i)
                 evacuate_hosts.append(ihost)
-            if host not in evacuate_hosts:
+            logging.info(host[0])
+            logging.info(evacuate_hosts)
+            if host[0] not in evacuate_hosts:
                 logging.info(evacuate_hosts)
-                logging.info(host)
+                logging.info(host[0])
+                for j in host:
+                    host = j
                 logging.info('evacuate server successful')
                 self.send_sms_result(host, 2)
                 self.send_sms(host)
             else:
+                for j in host:
+                    host = j
                 logging.info('evacuate server failed')
                 self.get_oncall()
                 self.send_sms_result(host, 3)

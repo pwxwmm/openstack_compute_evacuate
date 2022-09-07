@@ -1,6 +1,7 @@
 ### auto_check_compute_down
 #### author: mmwei3
 #### date: 2021/12/12
+#### mail: 1300042631@qq.com or mmwei3@iflytek.com
 
 #### Instructions
 ```angular2html
@@ -32,6 +33,7 @@ OS_PASSWORD=
 OS_AUTH_URL=http://x.x.x.x:35357/v3
 OS_DEFAULT_DOMAIN=Default
 INTERVAL=20  # Interval of each probe
+DISABLE_REASON=down_prepare 
 
 
 2. Run Docker
