@@ -4,6 +4,9 @@
 #### mail: 1300042631@qq.com or mmwei3@iflytek.com
 
 #### Instructions
+
+[![OSCS Status](https://www.oscs1024.com/platform/badge/pwxwmm/openstack_compute_evacuate.svg?size=large)](https://www.oscs1024.com/project/pwxwmm/openstack_compute_evacuate?ref=badge_large)
+
 ```angular2html
 This is openstack compute node ha!
 func: 
